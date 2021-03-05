@@ -2,7 +2,7 @@ name: SuggestionsTooltipShowcase
 version: ${pluginVersion}
 main: com.github.fefo.suggestionstooltipshowcase.SuggestionsTooltipShowcase
 api-version: 1.16
-softdepend: [ ProtocolLib ]
+depend: [ ProtocolLib ]
 authors: [ Fefo ]
 description: Pog showcase plugin for custom "suggestions tooltips"
 
