@@ -3,7 +3,6 @@ package com.github.fefo.suggestionstooltipshowcase;
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
 import com.comphenix.protocol.events.PacketAdapter;
-import com.comphenix.protocol.events.PacketContainer;
 import com.comphenix.protocol.events.PacketEvent;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -42,18 +41,19 @@ public final class TooltipsWithProtocolLibCommand implements TabExecutor {
     final Map<String, Message> textDecorationTooltips = new HashMap<>(TextDecoration.NAMES.keys().size());
     final Map<String, Message> randomSuggestions = new HashMap<>(10);
 
-    // first arg
+    // first arg -- named color suggestions
     NamedTextColor.NAMES.values().forEach(color -> {
       namedTextColorTooltips.put(color.toString(), ReflectionHelper.messageFromComponent(Component.text(color.toString(), color)));
     });
     this.indexedSuggestions.add(namedTextColorTooltips);
 
-    // second arg
+    // second arg -- text decoration suggestions
     TextDecoration.NAMES.values().forEach(deco -> {
       textDecorationTooltips.put(deco.toString(), ReflectionHelper.messageFromComponent(Component.text(deco.toString(), Style.style(deco))));
     });
     this.indexedSuggestions.add(textDecorationTooltips);
 
+    // third arg -- [a-z]{10} suggestions
     final int lowercaseA = 'a';
     final int lowercaseZ = 'z';
     final SplittableRandom random = new SplittableRandom();
@@ -116,8 +116,7 @@ public final class TooltipsWithProtocolLibCommand implements TabExecutor {
         return;
       }
 
-      final PacketContainer container = event.getPacket();
-      final Object packet = container.getHandle();
+      final Object packet = event.getPacket().getHandle();
       final Suggestions suggestions = ReflectionHelper.getSuggestions(packet);
 
       suggestions.getList().replaceAll(suggestion -> {

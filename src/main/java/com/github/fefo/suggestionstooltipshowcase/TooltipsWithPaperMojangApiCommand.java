@@ -41,18 +41,19 @@ public final class TooltipsWithPaperMojangApiCommand implements TabExecutor, Lis
     final Map<String, Message> textDecorationTooltips = new HashMap<>(TextDecoration.NAMES.keys().size());
     final Map<String, Message> randomSuggestions = new HashMap<>(10);
 
-    // first arg
+    // first arg -- named color suggestions
     NamedTextColor.NAMES.values().forEach(color -> {
       namedTextColorTooltips.put(color.toString(), ReflectionHelper.messageFromComponent(Component.text(color.toString(), color)));
     });
     this.indexedSuggestions.add(namedTextColorTooltips);
 
-    // second arg
+    // second arg -- text decoration suggestions
     TextDecoration.NAMES.values().forEach(deco -> {
       textDecorationTooltips.put(deco.toString(), ReflectionHelper.messageFromComponent(Component.text(deco.toString(), Style.style(deco))));
     });
     this.indexedSuggestions.add(textDecorationTooltips);
 
+    // third arg -- [a-z]{10} suggestions
     final int lowercaseA = 'a';
     final int lowercaseZ = 'z';
     final SplittableRandom random = new SplittableRandom();
